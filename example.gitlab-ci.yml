@@ -1,15 +1,15 @@
 # Maybe we should aspire to use this pipeline?
 # https://gitlab.com/gitlab-org/charts/gitlab-runner/-/blob/main/.gitlab-ci.yml?ref_type=heads
 
-image: registry.gitlab.com/dedevsecops/workstation:aws
+image: registry.gitlab.com/devopscoop/workstation:aws
 
 deploy:
   script:
     - >
-      helm repo add dedevsecops --username "$CHARTMUSEUM_USR" --password "$CHARTMUSEUM_PSW" https://charts.dedevsecops.com
-      for chart in dedevsecops/*; do
+      helm repo add devopscoop --username "$CHARTMUSEUM_USR" --password "$CHARTMUSEUM_PSW" https://charts.devopscoop.com
+      for chart in devopscoop/*; do
         if helm lint "${chart}"; then
           # Never fail...
-          helm push "${chart}" dedevsecops || true
-        fi 
+          helm push "${chart}" devopscoop || true
+        fi
       done
