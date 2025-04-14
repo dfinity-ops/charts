@@ -1,7 +1,9 @@
 # Maybe we should aspire to use this pipeline?
 # https://gitlab.com/gitlab-org/charts/gitlab-runner/-/blob/main/.gitlab-ci.yml?ref_type=heads
 
-image: alpine/helm:3.17.2
+image:
+  name: alpine/helm:3.17.2
+  entrypoint: ["/bin/sh", "-c"]
 
 push_helm_chart:
   script:
