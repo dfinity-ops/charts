@@ -1,0 +1,21 @@
+# Maybe we should aspire to use this pipeline?
+# https://gitlab.com/gitlab-org/charts/gitlab-runner/-/blob/main/.gitlab-ci.yml?ref_type=heads
+
+image: alpine/helm:3.17.2
+
+push_helm_chart:
+  script:
+    - export gitlab_pass="$CI_REGISTRY_PASSWORD"
+    - export gitlab_user="$CI_REGISTRY_USER"
+    - ./pipeline.sh
+
+
+    # - export HELM_EXPERIMENTAL_OCI=1
+    # Define the image path in the GitLab Container Registry with the commit ref slug and version tag
+    # - IMAGE="$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:1.0.0"
+    # Save the Helm chart as an OCI artifact
+    # - helm chart save ./charts/mychart $IMAGE
+    # Login to the GitLab Container Registry using CI variables
+    # - helm registry login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    # Push the Helm chart to the registry
+    # - helm chart push $IMAGE

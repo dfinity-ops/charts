@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 # Not using "-x" because we aren't debugging.
@@ -7,7 +7,7 @@ set -Eeuo pipefail
 # We get unbound var err if we don't set arg
 arg="${1:-}"
 
-echo $gitlab_pass | helm registry login -u $gitlab_user registry.gitlab.com --password-stdin
+helm registry login -u "$gitlab_user" -p "$gitlab_pass" registry.gitlab.com
 
 #helm lint devopscoop/*
 helm lint devopscoop/app
