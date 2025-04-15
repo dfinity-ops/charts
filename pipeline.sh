@@ -7,7 +7,7 @@ set -Eeuo pipefail
 # We get unbound var err if we don't set arg
 arg="${1:-}"
 
-helm registry login -u "$gitlab_user" -p "$gitlab_pass" registry.gitlab.com
+echo $gitlab_pass | helm registry login -u $gitlab_user --password-stdin registry.gitlab.com
 
 #helm lint devopscoop/*
 helm lint devopscoop/app

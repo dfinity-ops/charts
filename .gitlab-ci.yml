@@ -5,19 +5,22 @@ image:
   name: alpine/helm:3.17.2
   entrypoint: ["/bin/sh", "-c"]
 
-push_helm_chart:
+merge_request:
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID'
+      when: always
+    - when: never
   script:
     - export gitlab_pass="$CI_REGISTRY_PASSWORD"
     - export gitlab_user="$CI_REGISTRY_USER"
     - ./pipeline.sh
 
-
-    # - export HELM_EXPERIMENTAL_OCI=1
-    # Define the image path in the GitLab Container Registry with the commit ref slug and version tag
-    # - IMAGE="$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:1.0.0"
-    # Save the Helm chart as an OCI artifact
-    # - helm chart save ./charts/mychart $IMAGE
-    # Login to the GitLab Container Registry using CI variables
-    # - helm registry login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    # Push the Helm chart to the registry
-    # - helm chart push $IMAGE
+push_to_default_branch:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - when: never
+  script:
+    - export gitlab_pass="$CI_REGISTRY_PASSWORD"
+    - export gitlab_user="$CI_REGISTRY_USER"
+    - ./pipeline.sh push
