@@ -13,8 +13,11 @@ spec:
       {{- include "app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+      {{- with .Values.secrets }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      {{- end }}
+      {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
@@ -36,6 +39,10 @@ spec:
         - name: {{ .Chart.Name }}
           {{- with .Values.command }}
           command:
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
             {{- toYaml . | nindent 10 }}
           {{- end }}
           env:

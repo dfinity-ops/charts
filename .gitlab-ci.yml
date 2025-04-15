@@ -1,0 +1,26 @@
+# Maybe we should aspire to use this pipeline?
+# https://gitlab.com/gitlab-org/charts/gitlab-runner/-/blob/main/.gitlab-ci.yml?ref_type=heads
+
+image:
+  name: alpine/helm:3.17.2
+  entrypoint: ["/bin/sh", "-c"]
+
+merge_request:
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID'
+      when: always
+    - when: never
+  script:
+    - export gitlab_pass="$CI_REGISTRY_PASSWORD"
+    - export gitlab_user="$CI_REGISTRY_USER"
+    - ./pipeline.sh
+
+push_to_default_branch:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - when: never
+  script:
+    - export gitlab_pass="$CI_REGISTRY_PASSWORD"
+    - export gitlab_user="$CI_REGISTRY_USER"
+    - ./pipeline.sh push
