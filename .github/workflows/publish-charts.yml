@@ -1,0 +1,27 @@
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+jobs:
+  publish-charts:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine/helm:3.17.2
+    permissions:
+      contents: read
+      # id-token: write
+      packages: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - run: |
+          echo "helm_password=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "helm_username=${{ github.actor }}" >> $GITHUB_ENV
+          echo "helm_host=ghcr.io" >> $GITHUB_ENV
+      - name: Validate charts
+        run: |
+          ./pipeline.sh
+      - name: Publish charts
+        if: github.event_name == 'push'
+        run: |
+          ./pipeline.sh push
