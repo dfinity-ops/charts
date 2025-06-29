@@ -11,8 +11,10 @@ merge_request:
       when: always
     - when: never
   script:
-    - export gitlab_pass="$CI_REGISTRY_PASSWORD"
-    - export gitlab_user="$CI_REGISTRY_USER"
+    - export helm_registry="registry.gitlab.com"
+    - export helm_username="$CI_REGISTRY_USER"
+    - export helm_password="$CI_REGISTRY_PASSWORD"
+    - export git_repo_owner="$CI_PROJECT_NAMESPACE"
     - ./pipeline.sh
 
 push_to_default_branch:
@@ -21,6 +23,8 @@ push_to_default_branch:
       when: always
     - when: never
   script:
-    - export gitlab_pass="$CI_REGISTRY_PASSWORD"
-    - export gitlab_user="$CI_REGISTRY_USER"
+    - export helm_registry="registry.gitlab.com"
+    - export helm_username="$CI_REGISTRY_USER"
+    - export helm_password="$CI_REGISTRY_PASSWORD"
+    - export git_repo_owner="$CI_PROJECT_NAMESPACE"
     - ./pipeline.sh push
