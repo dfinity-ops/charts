@@ -15,9 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - run: |
-          echo "helm_password=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "helm_registry=ghcr.io" >> $GITHUB_ENV
           echo "helm_username=${{ github.actor }}" >> $GITHUB_ENV
-          echo "helm_host=ghcr.io" >> $GITHUB_ENV
+          echo "helm_password=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          echo "git_repo_owner=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
       - name: Validate charts
         run: |
           ./pipeline.sh
