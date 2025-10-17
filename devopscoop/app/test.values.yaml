@@ -181,7 +181,7 @@ affinity: {}
 #   - Use secrets: to automatically create a Secret and add each env var with valueFrom to the env: section of the Deployment.
 #
 envConfigMap:
-  COOL_MEME: "Six Seven" 
+  COOL_MEME: "Six Seven"
   HOG_RIDERS: "2"
 envSecret:
   LUGGAGE_COMBINATION: "12345"
