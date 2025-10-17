@@ -1,0 +1,15 @@
+{{- with .Values.configMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "app.fullname" $ }}-env
+  labels:
+    app: "{{ template "app.name" $ }}"
+    chart: "{{ template "app.chart" $ }}"
+    release: {{ $.Release.Name | quote }}
+    heritage: {{ $.Release.Service | quote }}
+data:
+  {{- range $key, $value := . }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+{{- end }}

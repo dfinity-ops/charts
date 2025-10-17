@@ -75,6 +75,44 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+# -- Expose the service via gateway-api HTTPRoute
+# Requires Gateway API resources and suitable controller installed within the cluster
+# (see: https://gateway-api.sigs.k8s.io/guides/)
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+  - name: gateway
+    sectionName: http
+    # namespace: default
+  # Hostnames matching HTTP header.
+  hostnames:
+  - chart-example.local
+  # List of rules and filters applied.
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /headers
+  #   filters:
+  #   - type: RequestHeaderModifier
+  #     requestHeaderModifier:
+  #       set:
+  #       - name: My-Overwrite-Header
+  #         value: this-is-the-only-value
+  #       remove:
+  #       - User-Agent
+  # - matches:
+  #   - path:
+  #       type: PathPrefix
+  #       value: /echo
+  #     headers:
+  #     - name: version
+  #       value: v2
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -88,15 +126,15 @@ resources: {}
   #   memory: 128Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+startupProbe:
+  httpGet:
+    path: /
+    port: http
 livenessProbe:
   httpGet:
     path: /
     port: http
 readinessProbe:
-  httpGet:
-    path: /
-    port: http
-startupProbe:
   httpGet:
     path: /
     port: http
@@ -129,7 +167,22 @@ tolerations: []
 affinity: {}
 
 # Environment variables
+# WARNING: never commit cleartext secrets to git! If you use `envSecret:` or `secrets:` below, it should be in a SOPS-encrypted file.
 # NOTE: These have to be strings. Even numbers have to be strings!
+#
+# Recommended:
+#   - Use envConfigMap: to automatically create a ConfigMap and add envFrom to the Deployment for cleartext env vars.
+#   - Use envSecret: to automatically create a Secret and add envFrom to the Deployment for secrets.
+# Alternative:
+#   - Use env: directly to override the env: section of the Deployment.
+# Deprecated:
+#   - Use secrets: to automatically create a Secret and add each env var with valueFrom to the env: section of the Deployment.
+#
+# envConfig:
+#   DUMB_THING_THE_KIDS_ARE_SAYING: "six seven"
+#   HOG_RIDER: 
+# envSecret:
+#   LUGGAGE_COMBINATION: 12345
 # env:
 #   - name: SCARIEST_NUMBER
 #     value: "7"
@@ -145,9 +198,6 @@ affinity: {}
 #       secretKeyRef:
 #         name: postgres
 #         key: db-password
-
-# Secrets
-# If you don't have an existing Secret for your env vars, you can use this generate a Secret and create all of the secretKeyRef env vars automatically. Note that you should never commit unencrypted cleartext secrets to git. If you use this `secrets:` map, it should be in a SOPS-encrypted file.
 # secrets:
 #   ADMIN_TOKEN: kjhfkjgahsdug
 #   PASSWORD: kfj09u039jh
