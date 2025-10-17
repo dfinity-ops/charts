@@ -14,11 +14,19 @@ spec:
   template:
     metadata:
       annotations:
+        {{- /* Had to move this underneath `annotations:`, because we need checksums even if we don't have podAnnotations. */}}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        {{- /* Automatically restart pods if ConfigMap or Secret changes. See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments */}}
         {{- with .Values.secrets }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") $ | sha256sum }}
+        {{- end }}
+        {{- with .Values.envConfigMap }}
+        checksum/envConfigMap: {{ include (print $.Template.BasePath "/env-configmap.yaml") $ | sha256sum }}
+        {{- end }}
+        {{- with .Values.envSecret }}
+        checksum/envSecret: {{ include (print $.Template.BasePath "/env-secret.yaml") $ | sha256sum }}
         {{- end }}
       labels:
         {{- include "app.labels" . | nindent 8 }}
@@ -53,6 +61,10 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
@@ -69,8 +81,30 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if or .Values.envConfigMap .Values.envConfigMapName .Values.envSecret .Values.envSecretName }}
+          envFrom:
+            {{- if .Values.envConfigMapName }}
+            - configMapRef:
+                name: {{ .Values.envConfigMapName }}
+            {{- end }}
+            {{- if .Values.envSecretName }}
+            - secretRef:
+                name: {{ .Values.envSecretName }}
+            {{- end }}
+            {{- if .Values.envConfigMap }}
+            - configMapRef:
+                name: {{ template "app.fullname" . }}-env
+            {{- end }}
+            {{- if .Values.envSecret }}
+            - secretRef:
+                name: {{ template "app.fullname" . }}-env
+            {{- end }}
+          {{- end }}
+          {{- if or .Values.env .Values.secrets }}
           env:
-            {{- toYaml .Values.env | nindent 12 }}
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
             {{- range $key, $value := .Values.secrets }}
             - name: {{ $key }}
               valueFrom:
@@ -78,16 +112,13 @@ spec:
                   name: {{ template "app.fullname" $ }}
                   key: {{ $key }}
             {{- end }}
+          {{- end }}
           {{- with .Values.command }}
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.args }}
           args:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.startupProbe }}
-          startupProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}

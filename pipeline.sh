@@ -10,7 +10,7 @@ arg="${1:-}"
 echo "$helm_password" | helm registry login -u "$helm_username" --password-stdin "$helm_registry"
 
 #helm lint ${git_repo_owner}/*
-helm lint ${git_repo_owner}/app
+helm lint "${git_repo_owner}/app"
 
 #for chart in ${git_repo_owner}/*; do
 for chart in ${git_repo_owner}/app; do

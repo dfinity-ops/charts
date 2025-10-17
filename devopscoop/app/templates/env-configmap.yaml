@@ -1,16 +1,15 @@
-{{- with .Values.secrets }}
+{{- with .Values.envConfigMap }}
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
-  name: {{ template "app.fullname" $ }}
+  name: {{ template "app.fullname" $ }}-env
   labels:
     app: "{{ template "app.name" $ }}"
     chart: "{{ template "app.chart" $ }}"
     release: {{ $.Release.Name | quote }}
     heritage: {{ $.Release.Service | quote }}
-type: Opaque
 data:
   {{- range $key, $value := . }}
-  {{ $key }}: {{ $value | b64enc }}
+  {{ $key }}: {{ $value | quote }}
   {{- end }}
 {{- end }}

@@ -1,0 +1,9 @@
+[Use envFrom instead of env]: In a Kubernetes Deployment, we should use `envFrom:` with ConfigMap and Secret instead of declaring vars directly in `env:`.
+  + <Shared config>: We can share same env vars with other Deployments if we put them in ConfigMap/Secret.
+    - <Out of sync>: releases that don't control the configmap will have to be restarted manually.
+      - <Wave>: can use [Wave](https://github.com/wave-k8s/wave) to keep things synchronized.
+  + <External Secrets Operator>: we can populate secrets using [External Secrets Operator](https://external-secrets.io/).
+  - <Helm Diff>: The `helm diff` command won't show changes, we would have to deploy to see changes.
+    - <Yes it will>: It would show changes to the ConfigMap/Secret (assuming we aren't talking about an externally controlled ConfigMap/Secret).
+  - <Indirection>: We would have to look at pod to see that it uses `envFrom`, then we'd have to look at the ConfigMap/Secret that it uses to see env vars.
+    - <env is Authoritative>: This doesn't matter, because the `env` command is the authoritative way to check environment. We shouldn't be looking at Pod yamls for that.
