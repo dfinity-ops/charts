@@ -180,42 +180,42 @@ affinity: {}
 # Deprecated:
 #   - Use secrets: to automatically create a Secret and add each env var with valueFrom to the env: section of the Deployment.
 #
-# envConfigMap:
-#   COOL_MEME: "Six Seven" 
-#   HOG_RIDERS: "2"
-# envSecret:
-#   LUGGAGE_COMBINATION: "12345"
-# envConfigMapName: custom-env
-# envSecretName: custom-env
-# env:
-#   - name: SCARIEST_NUMBER
-#     value: "7"
-#   - name: AWS_ACCESS_KEY_ID
-#     value: "AKIAIOSFODNN7EXAMPLE"
-#   - name: DB_USERNAME
-#     valueFrom:
-#       configMapKeyRef:
-#         name: my-configmap
-#         key: db-username
-#   - name: DB_PASSWORD
-#     valueFrom:
-#       secretKeyRef:
-#         name: postgres
-#         key: db-password
-# secrets:
-#   ADMIN_TOKEN: kjhfkjgahsdug
-#   PASSWORD: kfj09u039jh
-#   AWS_SECRET_ACCESS_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+envConfigMap:
+  COOL_MEME: "Six Seven" 
+  HOG_RIDERS: "2"
+envSecret:
+  LUGGAGE_COMBINATION: "12345"
+envConfigMapName: custom-env
+envSecretName: custom-env
+env:
+  - name: SCARIEST_NUMBER
+    value: "7"
+  - name: AWS_ACCESS_KEY_ID
+    value: "AKIAIOSFODNN7EXAMPLE"
+  - name: DB_USERNAME
+    valueFrom:
+      configMapKeyRef:
+        name: my-configmap
+        key: db-username
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: postgres
+        key: db-password
+secrets:
+  ADMIN_TOKEN: kjhfkjgahsdug
+  PASSWORD: kfj09u039jh
+  AWS_SECRET_ACCESS_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 
 # Command and args for your container
-# command:
-#  - /bin/sh
-# args:
-#  - -c
-#  - node /app/main.js --option1 thing
+command:
+ - /bin/sh
+args:
+ - -c
+ - node /app/main.js --option1 thing
 
 # Example initContainer
-# initContainers:
-#   - name: copy-bucket
-#     image: "amazon/aws-cli:2.17.29"
-#     command: ['sh', '-c', "aws s3 cp --recursive s3://mah-bucket-us-east-2/lolrus ."]
+initContainers:
+  - name: copy-bucket
+    image: "amazon/aws-cli:2.17.29"
+    command: ['sh', '-c', "aws s3 cp --recursive s3://mah-bucket-us-east-2/lolrus ."]

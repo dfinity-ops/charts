@@ -1,4 +1,4 @@
-{{- with .Values.configMap }}
+{{- with .Values.envConfigMap }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
