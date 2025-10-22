@@ -9,8 +9,7 @@ replicaCount: 1
 image:
   repository: nginx
   # This sets the pull policy for images.
-  # CIS Benchmarks recommend always pulling images, so we're going to change the default here.
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 

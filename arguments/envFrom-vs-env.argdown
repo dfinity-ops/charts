@@ -1,9 +1,9 @@
-[Use envFrom instead of env]: In a Kubernetes Deployment, we should use `envFrom:` with ConfigMap and Secret instead of declaring vars directly in `env:`.
-  + <Shared config>: We can share same env vars with other Deployments if we put them in ConfigMap/Secret.
-    - <Out of sync>: releases that don't control the configmap will have to be restarted manually.
-      - <Wave>: can use [Wave](https://github.com/wave-k8s/wave) to keep things synchronized.
-  + <External Secrets Operator>: we can populate secrets using [External Secrets Operator](https://external-secrets.io/).
+[Use envFrom instead of env]: In a Kubernetes Deployment, we should use `envFrom:` with a ConfigMap or Secret instead of declaring vars directly in `env:`.
+  + <DRYer>: We can share env vars with other Deployments in this namespace if we put them in a ConfigMap or Secret, which makes our code slightly DRYer.
+    - <Manual restart required>: Deployments that are not part of the same Helm release that controls the ConfigMap or Secret will have to be restarted manually, because they have no way of knowing when those objects change.
+      - <Wave>: can use [Wave](https://github.com/wave-k8s/wave) to automatically restart workloads when a ConfigMap or Secret changes.
+  + <External Secrets Operator>: we can populate Secrets using [External Secrets Operator](https://external-secrets.io/). This means that we can keep all of our secrets in a password manager, update them once at that source of truth, and our Kubernetes clusters will automatically pull the new secret everywhere that it's needed. This is much easier than manually updating SOPS-encrypted files across all of our clusters.
   - <Helm Diff>: The `helm diff` command won't show changes, we would have to deploy to see changes.
     - <Yes it will>: It would show changes to the ConfigMap/Secret (assuming we aren't talking about an externally controlled ConfigMap/Secret).
   - <Indirection>: We would have to look at pod to see that it uses `envFrom`, then we'd have to look at the ConfigMap/Secret that it uses to see env vars.
-    - <env is Authoritative>: This doesn't matter, because the `env` command is the authoritative way to check environment. We shouldn't be looking at Pod yamls for that.
+    - <env is Authoritative>: This doesn't matter, because the `env` command is the authoritative way to check environment. We shouldn't be looking at a Pod's YAML for that.
