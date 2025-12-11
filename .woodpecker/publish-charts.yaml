@@ -1,0 +1,29 @@
+pipeline:
+  image: alpine/helm:3.17.2
+  pull: true
+  environment:
+    helm_registry: "registry.gitlab.com"
+    helm_username:
+      from_secret: CI_REGISTRY_USER
+    helm_password:
+      from_secret: CI_REGISTRY_PASSWORD
+    git_repo_owner:
+      from_secret: CI_PROJECT_NAMESPACE
+  merge_request:
+    when: on_change
+    changes:
+      - devopscoop/**/*
+      - pipeline.sh
+      - .gitlab-ci.yml
+    commands:
+      - ./pipeline.sh
+  push_to_default_branch:
+    when:
+      ref:
+        - refs/heads/main # replace "main" with your $CI_DEFAULT_BRANCH if different
+      changes:
+        - devopscoop/**/*
+        - pipeline.sh
+        - .gitlab-ci.yml
+    commands:
+      - ./pipeline.sh push
