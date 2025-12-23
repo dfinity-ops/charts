@@ -1,16 +1,16 @@
 on:
   pull_request:
     branches: [main]
-    paths:
-      - .github/workflows/publish-charts.yaml
-      - devopscoop/**
-      - pipeline.sh
+    # paths:
+    #   - .github/workflows/publish-charts.yaml
+    #   - devopscoop/**
+    #   - pipeline.sh
   push:
     branches: [main]
-    paths:
-      - .github/workflows/publish-charts.yaml
-      - devopscoop/**
-      - pipeline.sh
+    # paths:
+    #   - .github/workflows/publish-charts.yaml
+    #   - devopscoop/**
+    #   - pipeline.sh
   workflow_dispatch: {}
 jobs:
   publish-charts:
