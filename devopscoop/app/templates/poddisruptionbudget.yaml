@@ -1,0 +1,20 @@
+# https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+# Copied the service.yaml default template, then used some patterns found in https://github.com/kubernetes/dashboard/blob/4940626339ee16a5261acc28ad814190636b3ba9/charts/kubernetes-dashboard/templates/security/pdb.yaml
+
+{{- if .Values.podDisruptionBudget.enabled -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "app.selectorLabels" . | nindent 4 }}
+  {{- if .Values.podDisruptionBudget.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  {{- end }}
+  {{- if .Values.podDisruptionBudget.maxUnavailable }}
+  maxUnavailable: {{ .Values.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+{{- end }}
