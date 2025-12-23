@@ -3,13 +3,13 @@ on:
     branches: [main]
     paths:
       - .github/workflows/publish-charts.yaml
-      - devopscoop
+      - devopscoop/**
       - pipeline.sh
   push:
     branches: [main]
     paths:
       - .github/workflows/publish-charts.yaml
-      - devopscoop
+      - devopscoop/**
       - pipeline.sh
   workflow_dispatch: {}
 jobs:
