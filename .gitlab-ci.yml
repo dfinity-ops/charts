@@ -8,6 +8,10 @@ image:
 merge_request:
   rules:
     - if: '$CI_MERGE_REQUEST_ID'
+      changes:
+        - devopscoop/**/*
+        - pipeline.sh
+        - .gitlab-ci.yml
       when: always
     - when: never
   script:
@@ -20,6 +24,10 @@ merge_request:
 push_to_default_branch:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      changes:
+        - devopscoop/**/*
+        - pipeline.sh
+        - .gitlab-ci.yml
       when: always
     - when: never
   script:

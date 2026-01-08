@@ -218,3 +218,9 @@ affinity: {}
 #   - name: copy-bucket
 #     image: "amazon/aws-cli:2.17.29"
 #     command: ['sh', '-c', "aws s3 cp --recursive s3://mah-bucket-us-east-2/lolrus ."]
+
+# Production workloads should have PDBs. Setting maxUnavailable to 1 is the safest setting for most applications. This ensures that only one pod can be taken out of service at a time.
+podDisruptionBudget:
+  enabled: true
+  # minAvailable: 1
+  maxUnavailable: 1

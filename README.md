@@ -50,7 +50,7 @@ spec:
   chart:
     spec:
       chart: app
-      version: 0.7.0
+      version: 0.8.1
       sourceRef:
         kind: HelmRepository
         name: devopscoop
@@ -62,11 +62,11 @@ spec:
 releases:
   - name: your-app-name
     chart: oci://registry.gitlab.com/devopscoop/charts/app
-    version: 0.7.0
+    version: 0.8.1
 ```
 
 ### Helm CLI
 
 ```sh
-helm install your-app-name oci://registry.gitlab.com/devopscoop/charts/app --version 0.7.0
+helm install your-app-name oci://registry.gitlab.com/devopscoop/charts/app --version 0.8.1
 ```

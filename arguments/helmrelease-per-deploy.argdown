@@ -1,0 +1,6 @@
+[One Helm release per deployment]: Some multi-mode applications may use the same container image for multiple Deployments. In these cases, we should have one Helm release per Deployment.
+  + [Decoupling]: This decouples Deployments so we can update them granularly. What if one of the modes has an error - that shouldn't mean that all of them are now in a bad state.
+    - [Helm aint dumb]: I think only the Kubernetes resources that change will be updated?
+  - [Messy]: This could create a lot of Helm releases, which seems messy.
+    - [That's like, your opinion, man]: Helm releases are just Secrets in the cluster, just lines of output in a `helm ls` command. Why does it matter if there are many of them?
+  + [Existing chart]: we already have a chart that does this. If we wanted to update the `app` chart to handle multiple Deployments, Services, Ingresses, ConfigMaps, Secrets, etc. it would be a fairly major refactor.
