@@ -10,7 +10,8 @@ metadata:
     {{- include "app.labels" . | nindent 4 }}
 spec:
   selector:
-    {{- include "app.selectorLabels" . | nindent 4 }}
+    matchLabels:
+      {{- include "app.selectorLabels" . | nindent 6 }}
   {{- if .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
   {{- end }}
