@@ -3,11 +3,10 @@ on:
     branches: [main]
   push:
     branches: [main]
-  workflow_dispatch: {}
 jobs:
   helm:
     container:
-      image: alpine/helm:3.17.2
+      image: alpine/helm:4.1.1
     permissions:
       contents: read
       packages: write
