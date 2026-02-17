@@ -26,6 +26,7 @@ See the `values.yaml` file for examples of how to use these features.
 
 This chart is published to these repos:
 
+- oci://codeberg.org/devopscoop/charts/app
 - oci://registry.gitlab.com/devopscoop/charts/app
 - oci://ghcr.io/devopscoop/charts/app
 
@@ -39,7 +40,7 @@ metadata:
   name: devopscoop
 spec:
   interval: 60m
-  url: oci://registry.gitlab.com/devopscoop/charts
+  url: oci://codeberg.org/devopscoop/charts
   type: oci
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -50,7 +51,7 @@ spec:
   chart:
     spec:
       chart: app
-      version: 0.8.1
+      version: 0.8.2
       sourceRef:
         kind: HelmRepository
         name: devopscoop
@@ -61,12 +62,12 @@ spec:
 ```yaml
 releases:
   - name: your-app-name
-    chart: oci://registry.gitlab.com/devopscoop/charts/app
-    version: 0.8.1
+    chart: oci://codeberg.org/devopscoop/charts/app
+    version: 0.8.2
 ```
 
 ### Helm CLI
 
 ```sh
-helm install your-app-name oci://registry.gitlab.com/devopscoop/charts/app --version 0.8.1
+helm install your-app-name oci://codeberg.org/devopscoop/charts/app --version 0.8.2
 ```
