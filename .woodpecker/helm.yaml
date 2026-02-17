@@ -29,7 +29,7 @@ steps:
       git_repo_owner: ${CI_REPO_OWNER}
     commands:
       - |
-        if [[ "${CI_EVENT}" == "push" && "${CI_COMMIT_BRANCH}" == "main" ]]; then
+        if [[ "${CI_PIPELINE_EVENT}" == "push" && "${CI_COMMIT_BRANCH}" == "main" ]]; then
           ./pipeline.sh push
         else
           ./pipeline.sh
