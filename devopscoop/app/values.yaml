@@ -8,27 +8,27 @@
 workloadType: "Deployment"
 
 # StatefulSet-specific configuration. Only used when workloadType is "StatefulSet".
-# statefulSet:
-#   # The name of the headless Service that governs this StatefulSet.
-#   # Defaults to "<fullname>-headless", which is auto-created by this chart.
-#   serviceName: ""
-#   # Pod management policy: "OrderedReady" (default) or "Parallel".
-#   podManagementPolicy: OrderedReady
-#   # Update strategy for the StatefulSet.
-#   updateStrategy:
-#     type: RollingUpdate
-#     rollingUpdate:
-#       partition: 0
-#   # Volume claim templates for persistent storage.
-#   volumeClaimTemplates:
-#   - metadata:
-#       name: data
-#     spec:
-#       accessModes: ["ReadWriteOnce"]
-#       storageClassName: "standard"
-#       resources:
-#         requests:
-#           storage: 1Gi
+statefulSet:
+  # The name of the headless Service that governs this StatefulSet.
+  # Defaults to "<fullname>-headless", which is auto-created by this chart.
+  serviceName: ""
+  # Pod management policy: "OrderedReady" (default) or "Parallel".
+  podManagementPolicy: OrderedReady
+  # Update strategy for the StatefulSet.
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 0
+  # Volume claim templates for persistent storage.
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "standard"
+      resources:
+        requests:
+          storage: 1Gi
 
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
